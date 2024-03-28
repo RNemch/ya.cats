@@ -9,6 +9,7 @@ import {
   changeProfileData,
   changePassword,
 } from './user-thunks'
+import { RootState } from '..'
 
 type UserState = {
   currentUser: UserData | null
@@ -71,5 +72,7 @@ const userSlice = createSlice({
       })
   },
 })
+
+export const selectUser = (state: RootState) => state.user.currentUser
 
 export const userReducer = userSlice.reducer

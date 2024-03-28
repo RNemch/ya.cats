@@ -1,10 +1,10 @@
 import dotenv from 'dotenv'
 dotenv.config()
-
 import express, { Request as ExpressRequest } from 'express'
 import path from 'node:path'
 import fs from 'node:fs/promises'
 import { createServer as createViteServer, ViteDevServer } from 'vite'
+import serialize from 'serialize-javascript'
 
 const port = process.env.PORT || 3000
 const clientPath = path.join(__dirname, '..')
@@ -33,7 +33,9 @@ async function createServer() {
     const url = req.originalUrl
 
     try {
-      let render: (req: ExpressRequest) => Promise<string>
+      let render: (
+        req: ExpressRequest
+      ) => Promise<{ html: string; initialState: unknown }>
       let template: string
 
       if (vite) {
@@ -64,9 +66,14 @@ async function createServer() {
         render = module.render
       }
 
-      const appHtml = await render(req)
+      const { html: appHtml, initialState } = await render(req)
 
-      const html = template.replace(`<!--ssr-outlet-->`, appHtml)
+      const html = template.replace(`<!--ssr-outlet-->`, appHtml).replace(
+        `<!--ssr-initial-state-->`,
+        `<script>window.APP_INITIAL_STATE = ${serialize(initialState, {
+          isJSON: true,
+        })}</script>`
+      )
 
       res.status(200).set({ 'Content-Type': 'text/html' }).end(html)
     } catch (error) {

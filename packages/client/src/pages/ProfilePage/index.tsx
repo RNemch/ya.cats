@@ -1,6 +1,3 @@
-import { FC, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { SubmitHandler, useForm } from 'react-hook-form'
 import { Background } from '@components/background'
 import { Button } from '@components/button'
 import { Center } from '@components/center'
@@ -8,15 +5,21 @@ import { Input } from '@components/input'
 import { Modal } from '@components/modal'
 import { Paper } from '@components/paper'
 import { Space } from '@components/space'
+import { FC, useEffect, useState } from 'react'
+import { SubmitHandler, useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
 import { AvatarUpload } from './AvatarUpload'
 import { EditPasswordModalContent } from './EditPasswordModalContent'
 
-import styles from './styles.module.css'
-import { InputTypes, LoadStatus, UserProfileData } from '@core/types'
-import { validation } from '@core/constants'
-import { useAppDispatch, useAppSelector } from '@store/hooks'
-import { changeProfileData } from '@store/user/user-thunks'
+import { usePage } from '@hooks/use-page'
+import { PageInitArgs } from '@routes'
+import { selectUser } from '@store/user/user-slice'
 import { Spinner } from '@components/spinner'
+import { validation } from '@core/constants'
+import { InputTypes, LoadStatus, UserProfileData } from '@core/types'
+import { useAppDispatch, useAppSelector } from '@store/hooks'
+import { changeProfileData, getUser } from '@store/user/user-thunks'
+import styles from './styles.module.css'
 
 const DEFAULT_VALUES = {
   first_name: '',
@@ -39,6 +42,8 @@ const ProfilePage: FC = () => {
 
   const { currentUser, status } = useAppSelector(state => state.user)
   const dispatch = useAppDispatch()
+
+  usePage({ initPage: initProfilePage })
 
   useEffect(() => {
     if (currentUser) {
@@ -143,6 +148,12 @@ const ProfilePage: FC = () => {
       )}
     </Background>
   )
+}
+
+export const initProfilePage = async ({ dispatch, state }: PageInitArgs) => {
+  if (!selectUser(state)) {
+    return dispatch(getUser())
+  }
 }
 
 export default ProfilePage

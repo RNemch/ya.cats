@@ -29,13 +29,14 @@ export default defineConfig({
   },
   build: {
     outDir: path.join(__dirname, 'dist/client'),
-  },
-  ssr: {
-    format: 'cjs',
+    rollupOptions: {
+      output: {
+        format: 'cjs',
+      },
+    },
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src'),
       '@assets': path.resolve(__dirname, './src/assets'),
       '@components': path.resolve(__dirname, './src/components'),
       '@core': path.resolve(__dirname, './src/core'),
@@ -46,6 +47,8 @@ export default defineConfig({
       '@utils': path.resolve(__dirname, './src/utils'),
       '@mechanics': path.resolve(__dirname, './src/mechanics'),
       '@store': path.resolve(__dirname, './src/store'),
+      '@hooks': path.resolve(__dirname, './src/hooks'),
+      '@routes': path.resolve(__dirname, './src/routes'),
     },
   },
   plugins: [react(), SWPluginOptions],

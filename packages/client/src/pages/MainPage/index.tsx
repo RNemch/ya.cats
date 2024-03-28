@@ -1,18 +1,23 @@
-import { Button } from '@components/button'
+import { usePage } from '@hooks/use-page'
+import { PageInitArgs } from '@routes'
 import { Background } from '@components/background'
+import { Button } from '@components/button'
 import { CatImage } from '@components/catImage'
 import { Center } from '@components/center'
 import { Space } from '@components/space'
 import { Typography } from '@components/typography'
-import { useNavigate } from 'react-router-dom'
-import { FC, SyntheticEvent } from 'react'
 import { routerPaths } from '@core/constants'
 import { useAppDispatch } from '@store/hooks'
-import { logout } from '@store/user/user-thunks'
+import { selectUser } from '@store/user/user-slice'
+import { getUser, logout } from '@store/user/user-thunks'
+import { FC, SyntheticEvent } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const MainPage: FC = () => {
   const navigate = useNavigate()
   const dispatch = useAppDispatch()
+
+  usePage({ initPage: initMainPage })
 
   const submitHandler = (e: SyntheticEvent) => {
     e.preventDefault()
@@ -56,6 +61,12 @@ const MainPage: FC = () => {
       </Center>
     </Background>
   )
+}
+
+export const initMainPage = async ({ dispatch, state }: PageInitArgs) => {
+  if (!selectUser(state)) {
+    return dispatch(getUser())
+  }
 }
 
 export default MainPage

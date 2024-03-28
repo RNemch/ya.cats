@@ -26,7 +26,9 @@
       "@services/*": ["src/services/*"],
       "@utils/*": ["src/utils/*"],
       "@mechanics/*": ["src/mechanics/*"],
-      "@store/*": ["src/store/*"]
+      "@store/*": ["src/store/*"],
+      "@hooks/*": ["src/hooks/*"],
+      "@routes": ["src/routes"],
     }
   },
   "include": ["src"],

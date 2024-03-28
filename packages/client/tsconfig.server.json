@@ -5,7 +5,7 @@
     "module": "commonjs",
     "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "lib": ["es2019", "DOM"],
+    "lib": ["es2019", "DOM"]
   },
   "include": ["server/index.ts"]
-} 
+}

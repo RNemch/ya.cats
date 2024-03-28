@@ -20,6 +20,8 @@ module.exports = {
     '@utils/(.*)$': '<rootDir>/src/utils/$1',
     '@mechanics/(.*)$': '<rootDir>/src/mechanics/$1',
     '@store/(.*)$': '<rootDir>/src/store/$1',
+    '@hooks/(.*)$': '<rootDir>/src/hooks/$1',
+    '@routes': '<rootDir>/src/routes',
   },
   setupFiles: ['jest-canvas-mock'],
 }
